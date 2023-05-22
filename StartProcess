@@ -1,4 +1,4 @@
-function createAndSendDocument() {
+function startProcess() {
   
   // Make a POST request with a JSON payload.
 var data = {  
@@ -16,10 +16,6 @@ var options = {
   var jsonObject = JSON.parse(response.getContentText());
   
   var data2 = {    
-   /* 'startInfo': {
-    'ReleaseKey':'PROCESS_KEY_HERE',
-    'Strategy':'All'
-    }*/
         'startInfo': {
          'ReleaseKey':'PROCESS_KEY_HERE',
           "RobotIds": [],
