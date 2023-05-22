@@ -1,0 +1,43 @@
+function createAndSendDocument() {
+  
+  // Make a POST request with a JSON payload.
+var data = {  
+  'grant_type':'refresh_token',
+  'client_id':'CLIENT_ID_HERE',
+  'refresh_token':'REFRESH_TOKEN_HERE'
+};
+var options = {
+  'method' : 'post',
+  'contentType': 'application/json',
+  'headers' : {'X-UIPATH-TenantName':'TENANT_NAME_HERE'},  
+  'payload' : JSON.stringify(data)
+};
+  var response = UrlFetchApp.fetch('https://account.uipath.com/oauth/token', options);
+  var jsonObject = JSON.parse(response.getContentText());
+  
+  var data2 = {    
+   /* 'startInfo': {
+    'ReleaseKey':'PROCESS_KEY_HERE',
+    'Strategy':'All'
+    }*/
+        'startInfo': {
+         'ReleaseKey':'PROCESS_KEY_HERE',
+          "RobotIds": [],
+          "JobsCount": 1,
+          "JobPriority": "Normal",
+          "Strategy": "ModernJobsCount",
+          "RuntimeType": "Unattended",
+          "InputArguments": "{}"
+   } 
+  };
+  
+  var bear = 'Bearer '+jsonObject.access_token;
+
+var options2 = {
+  'method' : 'post',
+  'contentType': 'application/json',
+    'headers' : {'X-UIPATH-TenantName':'TENANT_NAME_HERE', 'Authorization':bear,'X-UIPATH-OrganizationUnitId':'FOLDER_ID_HERE'},  
+  'payload' : JSON.stringify(data2)
+};
+  var response2 = UrlFetchApp.fetch('https://platform.uipath.com/ORG_ID_HERE/TENANT_NAME_HERE/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs', options2); 
+}
